@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Users;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get("/usuarios", function() {
-    return view("form");
+Route::get('/usuarios', function() {
+    $user = new Users();
+    return $user->create();
 });
