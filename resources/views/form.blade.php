@@ -20,7 +20,7 @@
                 <h1 class="font-bold text-2xl">Agregar Usuarios</h1>
                 <a class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded-md cursor-pointer ">Volver al Listado</a>
             </div>
-            <form class="rounded px-8 pt-6 pb-8 mb-4">
+            <form action="/api/usuarios" method="POST" class="rounded px-8 pt-6 pb-8 mb-4">
                 <div class="mb-4 flex justify-between">
                     <div class="w-1/2 mr-2">
                         <label for="nombre" class="block text-gray-700 text-sm font-bold mb-2">Nombre</label>
