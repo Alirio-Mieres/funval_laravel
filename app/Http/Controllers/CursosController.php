@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cursos;
 use Illuminate\Http\Request;
 
 class CursosController extends Controller
@@ -11,15 +12,8 @@ class CursosController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $docentes = Cursos::all();
+        return $docentes;
     }
 
     /**
@@ -27,7 +21,21 @@ class CursosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            // $request->validate()
+            $curso = new Cursos();
+            $curso->name = $request->name;
+            $curso->code = $request->code;
+            $curso->description = $request->description;
+            $curso->startdate = $request->startdate;
+            $curso->enddate = $request->enddate;
+            $curso->save();
+            return $curso;
+        } catch (\Throwable $th) {
+            return json_encode([
+                'error' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -36,14 +44,15 @@ class CursosController extends Controller
     public function show(string $id)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $curso = Cursos::find($id);
+        
+        if (!$curso) {
+            return json_encode([
+                'error' => 'No se encontro el curso'
+            ]);
+        }
+        
+        return $curso;
     }
 
     /**
@@ -52,6 +61,9 @@ class CursosController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $docente = Cursos::find($id);
+        $docente->update($request->all());
+        return $docente;
     }
 
     /**
@@ -59,6 +71,8 @@ class CursosController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->show($id);
+        $docente = Cursos::destroy($id);        
+        return $docente;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumnos;
 use Illuminate\Http\Request;
 
 class AlumnosController extends Controller
@@ -11,15 +12,8 @@ class AlumnosController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $docentes = Alumnos::all();
+        return $docentes;
     }
 
     /**
@@ -27,7 +21,21 @@ class AlumnosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            // $request->validate()
+            $alumno = new Alumnos();
+            $alumno->firstname = $request->firstname;
+            $alumno->lastname = $request->lastname;
+            $alumno->email = $request->email;
+            $alumno->phone = $request->phone;
+            $alumno->birthdate = $request->birthdate;
+            $alumno->save();
+            return $alumno;
+        } catch (\Throwable $th) {
+            return json_encode([
+                'error' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -36,14 +44,15 @@ class AlumnosController extends Controller
     public function show(string $id)
     {
         //
-    }
+        $alumno = Alumnos::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        if (!$alumno) {
+            return json_encode([
+                'error' => 'No se encontro el alumno'
+            ]);
+        }
+
+        return $alumno;
     }
 
     /**
@@ -52,6 +61,16 @@ class AlumnosController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $alumno = Alumnos::find($id);
+
+        if (!$alumno) {
+            return json_encode([
+                'error' => 'No se encontro el alumno'
+            ]);
+        }
+        
+        $alumno->update($request->all());
+        return $alumno;
     }
 
     /**
@@ -59,6 +78,8 @@ class AlumnosController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->show($id);
+        $alumno = Alumnos::destroy($id);
+        return $alumno;
     }
 }

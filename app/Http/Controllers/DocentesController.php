@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Docentes;
 use Illuminate\Http\Request;
 
 class DocentesController extends Controller
@@ -11,15 +12,8 @@ class DocentesController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $docentes = Docentes::all();
+        return $docentes;
     }
 
     /**
@@ -27,7 +21,21 @@ class DocentesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            // $request->validate()
+            $docente = new Docentes();
+            $docente->firstname = $request->firstname;
+            $docente->lastname = $request->lastname;
+            $docente->email = $request->email;
+            $docente->phone = $request->phone;
+            $docente->birthdate = $request->birthdate;
+            $docente->save();
+            return $docente;
+        } catch (\Throwable $th) {
+            return json_encode([
+                'error' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -36,14 +44,15 @@ class DocentesController extends Controller
     public function show(string $id)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $docente = Docentes::find($id);
+        
+        if (!$docente) {
+            return json_encode([
+                'error' => 'No se encontro el docente'
+            ]);
+        }
+        
+        return $docente;
     }
 
     /**
@@ -52,6 +61,16 @@ class DocentesController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $docente = Docentes::find($id);
+
+        if (!$docente) {
+            return json_encode([
+                'error' => 'No se encontro el docente'
+            ]);
+        }
+        
+        $docente->update($request->all());
+        return $docente;
     }
 
     /**
@@ -59,6 +78,8 @@ class DocentesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->show($id);
+        $docente = Docentes::destroy($id);        
+        return $docente;
     }
 }
