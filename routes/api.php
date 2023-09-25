@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AlumnosController;
+use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\CursosController;
 use App\Http\Controllers\DocentesController;
+use App\Http\Controllers\MatriculacionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +46,12 @@ Route::controller(CursosController::class)->group(function() {
     Route::post('/cursos', 'store');
     Route::put('/cursos/{id}', 'update');
     Route::delete('/cursos/{id}', 'destroy');
+});
+
+Route::controller(MatriculacionController::class)->group(function() {
+    Route::post('/matriculacion', 'store');
+});
+
+Route::controller(AsistenciaController::class)->group(function() {
+    Route::post('/asistencia', 'store');
 });
