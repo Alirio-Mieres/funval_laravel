@@ -22,7 +22,14 @@ class AlumnosController extends Controller
     public function store(Request $request)
     {
         try {
-            // $request->validate()
+            $request->validate([
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'email' => 'required|email|unique:alumnos,email,except,id',
+                'phone' => 'required',
+                'birthdate' => 'required|date',
+            ]);
+
             $alumno = new Alumnos();
             $alumno->firstname = $request->firstname;
             $alumno->lastname = $request->lastname;
